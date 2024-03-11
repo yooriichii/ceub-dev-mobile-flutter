@@ -1,153 +1,194 @@
 void main() {
-  print('Hello, World!');
-
-  //Comentários
+  //Adicionar Comentários
   /*
-  Comentários
-  Várias
-  Linhas
+  Comentários em várias linhas
    */
-  var nome = 'Fernando Dias';
+  print("Hello World ");
+
+  //Criação de variáveis
+  var nome = "Fernando Dias";
   var idade = 36;
   var altura = 1.74;
-  var listaNomes = ['Lucas', 'Ana', 'João', 'Simone'];
-  var listadynamic = [
-    'Lucas',
-    32,
-    1.54,
-    {'id': 1, 'valor': 'Fulano'},
-    [1, 2, 3, 4]
-  ];
-  var objMap = {'id': 1, 'url': 'http://google.com.br'};
+  var listaNomes = ["Fernando", "Lucas", "Ana", "Rosa"];
+  var listaDynamic = ["Lucas", 1.45, 23, [1,2,3,4]];
+  var objMap = {'id' : 1, 'valor': 'Olá'};
 
   print(nome.runtimeType);
   print(idade.runtimeType);
   print(altura.runtimeType);
   print(listaNomes.runtimeType);
-  print(listadynamic.runtimeType);
+  print(listaDynamic.runtimeType);
   print(objMap.runtimeType);
 
-  if (idade >= 18) {
-    print('É maior de idade');
-  } else if (idade >= 65) {
-    print('É Idoso');
-  } else {
-    print('É criança ou menor');
+  //CONDIÇÕES
+
+  if(idade >= 18){
+    print("É maior de idade");
+  } else if(idade >= 65) {
+    print("É idoso");
+  }else{
+    print("É criança ou menor");
   }
 
-  for (final nome in listaNomes) {
-    print('Meu nome é: ${nome}');
+  //LOOP
+  for(final nome in listaNomes) {
+    print('Meu nome: ${nome}');
   }
 
-  for (int mes = 1; mes <= 12; mes++) {
-    print(mes);
+  for(int mes = 1; mes <= 12; mes++){
+    print('Mês: ${mes}');
   }
 
-  while (idade < 20) {
-    idade += 1;
+  while(idade < 40){
+    idade++;
+    print('Idade aumentando: ${idade}');
   }
 
-  String contenarComVirgula(String valor1, String valor2) {
-    return '${valor1} , ${valor2} ';
+  //Funções
+
+  //Retorno - Nome da função - (parâmetros)
+  String concatenarStringComVirgula(String valor1, String valor2) {
+    return '${valor1},$valor2';
   }
 
-  var variavelFuncao = contenarComVirgula('Fernando', 'Professor');
+  var minhaFuncao = concatenarStringComVirgula("Fernando", "20");
+  print(minhaFuncao);
 
-  print(variavelFuncao);
+  bool filtrarString(Object item){
+    return item.runtimeType == String;
+  }
+  
+  var filtroComFuncaoNormal = listaDynamic.where(filtrarString).toList();
 
-  var listaFiltro =
-      listadynamic.where((item) => item.runtimeType == String).toList();
-  print(listaFiltro);
+  //(obj){
+    //return
+  // }
+  var filtroComFuncao = listaDynamic.where((item) {
+    return item.runtimeType == String;
+  }).toList();
+  
+  var listaFitro = listaDynamic.where(
+          (item) => item.runtimeType == String).toList();
+
+  print(listaFitro);
+  print(filtroComFuncaoNormal);
+  print(filtroComFuncao);
+
+  //CHAMADA DAS CLASSES
 
   Eletronico eletronico = Eletronico(220, false);
   eletronico.ligar();
-  print(eletronico.estaLigado());
+  print('Eletro esta ligado: ${eletronico.estaLigado()}');
 
   eletronico = Geladeira(110, false);
-  print(eletronico.estaLigado());
-  eletronico.ligar();
-  print(eletronico.estaLigado());
+  print('Geladeira esta ligado? -> ${eletronico.estaLigado()}');
 
-  (eletronico as Geladeira).refrigar();
-  //FALAR de MIXIN
-  //Falar de interface
+  if(eletronico is Geladeira){
+    // (eletronico as Geladeira).refrigerar();
+    (eletronico as Geladeira).ligar();
+  }
+
+  print('Geladeira esta ligado? -> ${eletronico.estaLigado()}');
+
 
   Televisao tv = Televisao(220, true);
-  tv.conectarAo5G();
-  //Falar de construtor opcional e nomeado, Fazer no eletronico
-
-  //ENUMS
+  tv.conectar5G();
+  
 }
 
-//Criar Interface Dispositivo
-//Metodo override marca
-//SYNC
-// Future<void> printWithDelay(String message) async {
-//   await Future.delayed(oneSecond);
-//   print(message);
-// }
+//CLASSE - !!! CRIE FORA DO MÉTODO MAIN  !!!
 
 class Eletronico {
-  int? voltagem;
-  bool? ligado;
+  //Propriedades
+  int voltagem;
+  bool ligado;
 
+  //Construtor da classe
   Eletronico(this.voltagem, this.ligado);
 
-  bool estaLigado() {
-    return ligado ?? false;
+  //Métodos
+  bool estaLigado(){
+    return ligado;
   }
-
-  void ligar() {
+  void ligar(){
     ligado = true;
   }
-
-  void desligar() {
+  void desligar(){
     ligado = false;
   }
 }
 
-class Geladeira extends Eletronico {
+class Geladeira extends Eletronico implements DispositivoInterface {
+
   Geladeira(super.voltagem, super.ligado);
 
-  void refrigar() {
-    print("Estou refrigrando!");
+  void refrigerar(){
+    print("Refrigerando...");
   }
 
   void congelar() {
-    print("Estou congelando!");
+    print("Congelando...");
   }
 
   @override
-  void ligar() {
+  void ligar(){
     super.ligar();
-    refrigar();
+    refrigerar();
   }
+
+  @override
+  int getAnosGarantia() {
+    return 2;
+  }
+
+  @override
+  String getMarca() {
+    return "BRASTEMP";
+  }
+
+
 }
 
 class Televisao extends Eletronico with Conexao {
+
   Televisao(super.voltagem, super.ligado);
 
-  void assitir() {
-    print("assitindo");
+  void assistir(){
+    print("Vendo Tv...");
   }
 
-  void conectarWifi() {
-    print("Conectando a Internet...");
+  void conectarWifi(){
+    print("Conectando ...");
   }
 
   void desconectarWifi() {
-    print("Desconectando a Internet...");
+    print("Desconectando ...");
   }
 
-  @override
-  void desligar() {
-    desconectarWifi();
-    super.desligar();
-  }
 }
 
 mixin Conexao {
-  void conectarAo5G() {
-    print("Conecatando ao 5G");
+
+  void conectar5G(){
+    print("Conectando ao 5G....");
   }
 }
+
+abstract class DispositivoInterface {
+
+  int getAnosGarantia(){
+    return 3;
+  }
+
+  String getMarca();
+
+}
+
+
+//ATIVIDADE
+
+// Escreva uma função que retorne a soma de 2 números.
+// Escreva uma função que receba um ano (int) e retorne o século daquele ano.
+
+
+
