@@ -12,7 +12,7 @@ Resposta: c
 a) Verdadeiro
 b) Falso
 
-Resposta: falso
+Resposta: verdadeiro
 
 3) Quais das seguintes maneiras são válidas de atualizar uma variável? Escolha quantas respostas julgar adequadas.
 
